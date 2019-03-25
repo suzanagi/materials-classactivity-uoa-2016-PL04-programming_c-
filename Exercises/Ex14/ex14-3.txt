@@ -1,0 +1,33 @@
+1 出力と説明
+出力:
+bash-4.4$ g++ ex14-3.cc
+bash-4.4$ ./a.out
+ticket default constructor
+airplane default constructor
+ticket parameter-constructor
+cinema parameter-constructor
+ID:*** Seat:***
+ID:123 Seat:45a
+
+説明:
+まずairplaneTicket, cinemaTicketはそれぞれクラスticketを継承しているため, それらのコンストラクタを呼び出す際には明示してもしなくても必ずticketのコンストラクタも呼び出される.
+出力について, まずmain中で始めに初期化されるのはairplaneTicketである.このときコンストラクタへの引数はなく,空のairplaneTicketコンストラクタが呼び出されるが, まず継承元クラスの引数なしticket()コンストラクタが呼び出され, それから空のairplaneTicketコンストラクタが呼び出される.そのため始め2行の出力はticket, airplaneの順番になる.
+次にmain中ではcinemaTicketが引数ありのコンストラクタで呼び出される.するとこのとき引数ありのcinemaTicketコンストラクタは明示的に引数ありのticket()コンストラクタを呼び出しており,それから引数ありのcinemaTicketコンストラクタが実行される.そのため出力はticket parameter, cinema parameterの順番になる.
+最後にIDとSeatが表示されるが、まずtList[0]に格納されたairplaneTicketは引数なしコンストラクタで初期化されたため, 空のticketコンストラクタでIDに***, 空のairplaneTicketコンストラクタでSeatに***が格納されている.そのため表示はどちらも***となっている.tList[1]に格納されたcinemaTicketは引数ありコンストラクタで指定したID, Seatの値で初期化されており,引数ありticketコンストラクタでID:123, 引数ありcinemaTicketコンストラクタでSeat:45aが格納されているため,表示はどちらもその値になっている.
+
+2. virtual void printInfo()=0;
+出力:
+bash-4.4$ g++ ex14-3.cc
+bash-4.4$ ./a.out
+ticket default constructor
+airplane default constructor
+ticket parameter-constructor
+cinema parameter-constructor
+ID:*** Seat:*** Flight No:***
+ID:123 Seat:45a Movie Name:Flight to the Future
+
+説明:
+virtualを用いて継承元クラスの関数を仮想関数とすると,当該のオブジェクトについて関数の呼出しがあったときに継承先クラスで実装されたものが実行されるようになる.
+今回の場合もticketクラスで実行されていた関数が仮想関数となったことにより継承先のairplaneとcinemaで実装されている中身の内容が実行されている.
+
+3.純粋仮想関数
